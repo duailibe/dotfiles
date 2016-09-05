@@ -1,0 +1,26 @@
+"*":
+  core:
+    ignoredNames: [
+      ".git"
+      ".hg"
+      ".svn"
+      ".DS_Store"
+      "._*"
+      "Thumbs.db"
+      "*.pyc"
+    ]
+    themes: [
+      "atom-dark-ui"
+      "atom-dark-syntax"
+    ]
+  editor:
+    fontSize: 10
+    preferredLineLength: 100
+  "exception-reporting":
+    userId: "c48ac152-7102-ae12-c9d6-2aafd0240b51"
+  "tree-view":
+    autoReveal: true
+    hideIgnoredNames: true
+    hideVcsIgnoredFiles: true
+  welcome:
+    showOnStartup: false
