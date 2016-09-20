@@ -1,4 +1,6 @@
 "*":
+  "autocomplete-plus":
+    confirmCompletion: "tab"
   core:
     ignoredNames: [
       ".git"
@@ -19,8 +21,9 @@
   "exception-reporting":
     userId: "c48ac152-7102-ae12-c9d6-2aafd0240b51"
   "tree-view":
-    autoReveal: true
     hideIgnoredNames: true
     hideVcsIgnoredFiles: true
   welcome:
     showOnStartup: false
+  whitespace:
+    ignoreWhitespaceOnCurrentLine: false
