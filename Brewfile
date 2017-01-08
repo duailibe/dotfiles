@@ -1,5 +1,3 @@
-cask_args appdir: '/Applications'
-
 tap 'homebrew/bundle'
 tap 'homebrew/versions'
 
@@ -15,15 +13,3 @@ brew 'awscli'
 brew 'grc'
 brew 'heroku'
 brew 'postgresql'
-
-cask 'google-chrome'
-cask 'firefox'
-cask 'atom'
-cask 'vlc'
-cask 'transmission'
-cask 'tunnelbear'
-cask 'spotify'
-cask 'slack'
-cask 'macpass'
-cask 'dropbox'
-cask 'whatsapp'
