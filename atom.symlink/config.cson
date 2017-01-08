@@ -1,6 +1,7 @@
 "*":
   "autocomplete-plus":
     confirmCompletion: "tab"
+    enableAutoActivation: false
   core:
     ignoredNames: [
       ".git"
@@ -11,6 +12,7 @@
       "Thumbs.db"
       "*.pyc"
     ]
+    telemetryConsent: "limited"
     themes: [
       "atom-dark-ui"
       "atom-dark-syntax"
