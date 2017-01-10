@@ -28,6 +28,10 @@ do
   source $file
 done
 
+# alt+backspace delete word like bash
+autoload -U select-word-style
+select-word-style bash
+
 # initialize autocomplete here, otherwise functions won't be loaded
 autoload -U compinit
 compinit -u
