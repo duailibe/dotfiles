@@ -25,3 +25,4 @@ cask 'spotify'
 cask 'macpass'
 
 mas '1Password', id: 443987910
+mas 'The Unarchiver', id: 425424353
