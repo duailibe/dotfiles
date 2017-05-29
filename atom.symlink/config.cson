@@ -3,6 +3,9 @@
     confirmCompletion: "tab"
     enableAutoActivation: false
   core:
+    disabledPackages: [
+      "vim-mode-plus"
+    ]
     ignoredNames: [
       ".git"
       ".hg"
@@ -25,6 +28,8 @@
   "tree-view":
     hideIgnoredNames: true
     hideVcsIgnoredFiles: true
+  "vim-mode-plus":
+    incrementalSearch: true
   welcome:
     showOnStartup: false
   whitespace:
