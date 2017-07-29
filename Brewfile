@@ -1,28 +1,36 @@
-cask_args appdir: '/Applications'
+cask_args appdir: "/Applications"
 
-tap 'homebrew/bundle'
-tap 'homebrew/versions'
+tap "caskroom/cask"
+tap "homebrew/bundle"
+tap "homebrew/core"
+tap "homebrew/services"
+tap "homebrew/versions"
 
-brew 'coreutils'
-brew 'gcc'
-brew 'youtube-dl'
-brew 'node'
-brew 'yarn'
-brew 'pyenv'
-brew 'pyenv-virtualenvwrapper'
-brew 'gcc'
-brew 'awscli'
-brew 'grc'
-brew 'heroku'
-brew 'homebrew/versions/postgresql94'
-brew 'mas'
+brew "awscli"
+brew "coreutils"
+brew "gcc"
+brew "grc"
+brew "heroku"
+brew "postgresql"
+brew "mas"
+brew "node"
+brew "pyenv"
+brew "pyenv-virtualenvwrapper"
+brew "yarn"
+brew "youtube-dl"
 
-cask 'google-chrome'
-cask 'firefox'
-cask 'dropbox'
-cask 'vlc'
-cask 'spotify'
-cask 'macpass'
+cask "1password"
+cask "atom"
+cask "dropbox"
+cask "firefox"
+cask "google-chrome"
+cask "macpass"
+cask "postman"
+cask "slack"
+cask "spectacle"
+cask "spotify"
+cask "vlc"
+cask "whatsapp"
 
-mas '1Password', id: 443987910
-mas 'The Unarchiver', id: 425424353
+mas "The Unarchiver", id: 425424353
+mas "Things3", id: 904280696
