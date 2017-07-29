@@ -25,6 +25,19 @@
     preferredLineLength: 100
   "exception-reporting":
     userId: "c48ac152-7102-ae12-c9d6-2aafd0240b51"
+  "linter-ui-default": {}
+  "prettier-atom":
+    formatOnSaveOptions:
+      enabled: true
+      isDisabledIfNotInPackageJson: true
+      showInStatusBar: true
+    prettierOptions:
+      printWidth: 100
+      singleQuote: true
+      trailingComma: "es5"
+    useEditorConfig: false
+  "reason-refmt":
+    useLinter: false
   "tree-view":
     hideIgnoredNames: true
     hideVcsIgnoredFiles: true
