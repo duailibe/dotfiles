@@ -1,10 +1,17 @@
 "*":
+  "atom-ide-ui":
+    "atom-ide-code-format": {}
+    "atom-ide-diagnostics-ui":
+      showDiagnosticTraces: true
   "autocomplete-plus":
     confirmCompletion: "tab"
     enableAutoActivation: false
   core:
     disabledPackages: [
       "vim-mode-plus"
+      "linter"
+      "atom-ide-ui"
+      "ide-flowtype"
     ]
     ignoredNames: [
       ".git"
@@ -15,32 +22,38 @@
       "Thumbs.db"
       "*.pyc"
     ]
+    restorePreviousWindowsOnStart: "no"
     telemetryConsent: "limited"
     themes: [
       "atom-dark-ui"
       "atom-dark-syntax"
     ]
   editor:
-    fontSize: 10
+    fontFamily: "Fira Code"
+    fontSize: 11
     preferredLineLength: 100
   "exception-reporting":
     userId: "c48ac152-7102-ae12-c9d6-2aafd0240b51"
-  "linter-ui-default": {}
+  "ide-flowtype":
+    tryFlowBin: true
+  "linter-ui-default":
+    panelHeight: 300
   "prettier-atom":
     formatOnSaveOptions:
-      enabled: true
-      isDisabledIfNotInPackageJson: true
       showInStatusBar: true
+      whitelistedGlobs: [
+        "*.js"
+      ]
     prettierOptions:
       printWidth: 100
       singleQuote: true
       trailingComma: "es5"
     useEditorConfig: false
+    useEslint: true
   "reason-refmt":
     useLinter: false
   "tree-view":
     hideIgnoredNames: true
-    hideVcsIgnoredFiles: true
   "vim-mode-plus":
     incrementalSearch: true
   welcome:
