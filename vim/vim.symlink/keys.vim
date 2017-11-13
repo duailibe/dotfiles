@@ -1,0 +1,468 @@
+"
+"						*map-overview* *map-modes*
+"
+"   Overview of which map command works in which mode.  More details below.
+"        COMMANDS                    MODES ~
+"   :map   :noremap  :unmap     Normal, Visual, Select, Operator-pending
+"   :nmap  :nnoremap :nunmap    Normal
+"   :vmap  :vnoremap :vunmap    Visual and Select
+"   :smap  :snoremap :sunmap    Select
+"   :xmap  :xnoremap :xunmap    Visual
+"   :omap  :onoremap :ounmap    Operator-pending
+"   :map!  :noremap! :unmap!    Insert and Command-line
+"   :imap  :inoremap :iunmap    Insert
+"   :lmap  :lnoremap :lunmap    Insert, Command-line, Lang-Arg
+"   :cmap  :cnoremap :cunmap    Command-line
+"
+"
+"       COMMANDS				      MODES ~
+"                  Normal  Visual+Select  Operator-pending ~
+"   :map   :noremap   :unmap   :mapclear	 yes	    yes		   yes
+"   :nmap  :nnoremap  :nunmap  :nmapclear	 yes	     -		    -
+"   :vmap  :vnoremap  :vunmap  :vmapclear	  -	    yes		    -
+"   :omap  :onoremap  :ounmap  :omapclear	  -	     -		   yes
+
+
+" Attempt to configure PairUtils so that c-w deletes the pair.  Doesn't work!
+" ===========================================================================
+" function! s:insertMapping(from, functionToCallName, cmd, ...)
+"   let args = []
+"   for arg in a:000
+"     call add(args, '"' . escape(arg, '"|') . '"')
+"   endfor
+"   exe 'inoremap <silent> <buffer> ' . a:from .  ' <C-R>=' . a:functionToCallName . '(' . join(args, ',') . ')<CR>' . a:cmd
+" endfunction
+
+" " We want c-w to have the same benefits as backspace when it makes sense.
+" call s:insertMapping('<C-w>', 'jigsaw#Backspace', '')
+
+
+" Command + Shift + h/j/k/l
+" =========================
+"
+" - Cmd-Shift-h/l always move to left/right windows.
+" - Cmd-Shift-J/K move to the up/down windows,
+"   - Except in diff mode, where they move to the next change in diff
+"     because in vertical diff mode you don't need to move up down.
+"
+" https://vi.stackexchange.com/questions/2705/create-mappings-that-only-apply-to-diff-mode
+nnoremap <expr> <D-J> &diff ? ']c' : '<C-W>j'
+nnoremap <expr> <D-K> &diff ? '[c' : '<C-W>k'
+nmap <D-H> <c-w><c-h>
+nmap <D-L> <c-w><c-l>
+
+
+
+"totally annoying default mapping for cap k
+nmap K <nop>
+
+
+" Always gets out of autocomplete's and just lets you enter the newline!
+imap <C-Cr> <Left><Right><Cr>
+
+" ==== My favorite way of avoiding the escape key - feel free to delete all this
+" == c-l escapes and saves, avoid the pinky stretch
+vmap <C-l> <Esc><Cr>
+imap <C-l> <Esc>l
+map <c-l> <Esc>
+"while selecting (for use in snippets c-l cancels out)
+smap <C-l> <Esc>
+" While commanding
+cmap <C-l> <C-c>
+
+let g:playWellWithFuzzyFinder = 0
+
+if g:playWellWithFuzzyFinder
+  " For fuzzyfinder, c-c won't fire insert leave. yet we can't just map to
+  " escape because c-c is more than just that - it also kills any jobs etc.
+  imap <c-c> <esc>
+endif
+
+
+" NerdComment
+" These two don't work - they trigger tab switching on space.
+" vmap <D-/> <Leader>c<Space>
+" nmap <D-/> <Leader>c<Space>
+vmap <D-/> <Plug>NERDCommenterToggle
+nmap <D-/> <Plug>NERDCommenterToggle
+
+
+" == c-h always does the same as c-l but also saves.
+vmap <C-h> <Esc><Cr>:w<Cr>
+imap <C-h> <Esc>:w<Cr>l
+map <c-h> <Esc>:w<Cr>
+smap <C-h> <Esc>:w<Cr>
+cmap <C-h> <C-c>:w<Cr>
+
+
+imap <C-k> <space><Esc>Da
+imap <C-j> <esc>Ji
+" Unfortunately cannot distinguish ctrl-o and ctrl-O Neovim adds it though! In
+" that case we would have the following bindings.
+" imap <C-O> <Esc> O
+" imap <C-o> <Esc> o
+
+" Until NeoVim comes, we'll have these
+imap <C-o> <Esc> O
+imap <S-Enter> <End><Cr>
+
+
+" Huge saver! Why do you need to press shift when executing a command?
+nnoremap ; :
+
+" fast scrolling using control when in command mode (keeping the j/k paradigm)
+map <C-j> <C-d>
+map <C-k> <C-u>
+
+" Make S always delete until the point where you'd want to start typing -
+" with some indent plugins, or settings the desired behavior is lost - this
+" restores it. (Doesn't always work - looking for better solution)
+nmap S ddO
+
+" ==== Window and split navigation ===
+"Tab through your splits! (Shift tab won't ever work on terminal :( )
+set winwidth=1
+nmap <Tab> <c-w><c-w>
+nmap <s-Tab> <c-w><s-w>
+
+
+imap <c-Tab> <Esc>:tabnext<Cr>
+imap <c-S-Tab> <Esc>:tabprev<Cr>
+nmap <c-Tab> :tabnext<Cr>
+nmap <c-S-Tab> :tabprev<Cr>
+
+imap <D->> <Esc>:vertical resize +10<CR>
+imap <D->> <Esc>:vertical resize +10<CR>
+nmap <D->> :vertical resize +10<CR>
+nmap <D-<> :vertical resize -10<CR>
+
+" UltiSnips
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+
+" NERDTree
+" =========
+" Regular NERDTree bindings (not the NERDTreeTabs bindings)
+" https://stackoverflow.com/questions/23891006/how-to-set-the-cursor-focus-after-toggling-the-nerdtree-in-vim
+if has("gui_running")
+  if has("gui_macvim")
+    " Toggle File Tree:
+    " ------------------
+    " Insert, Command-line, Lang-Arg
+    lnoremap <silent> <special> <D-\> <Esc> : let g:VimSplitBalancerSupress=1 <Bar> NERDTreeToggle <Bar> wincmd p <Bar> let g:VimSplitBalancerSupress=0 <CR>
+    " Normal
+    nnoremap <silent> <special> <D-\> : let g:VimSplitBalancerSupress=1 <Bar> NERDTreeToggle <Bar> wincmd p <Bar> let g:VimSplitBalancerSupress=0 <CR>
+    " Visual and Select
+    vnoremap <silent> <special> <D-\> <Esc> : let g:VimSplitBalancerSupress=1 <Bar> NERDTreeToggle <Bar> wincmd p <Bar> let g:VimSplitBalancerSupress=0 <CR>
+    " Operator pending
+    onoremap <silent> <special> <D-\> <Esc> : let g:VimSplitBalancerSupress=1 <Bar> NERDTreeToggle <Bar> wincmd p <Bar> let g:VimSplitBalancerSupress=0 <CR>
+
+    " Find In File Tree:
+    " ------------------
+    " Insert, Command-line, Lang-Arg
+    lnoremap <silent> <special> <D-Bar> <Esc> : let g:VimSplitBalancerSupress=1 <Bar> NERDTreeFind <Bar> let g:VimSplitBalancerSupress=0 <CR>
+    " Normal
+    nnoremap <silent> <special> <D-Bar> : let g:VimSplitBalancerSupress=1 <Bar> NERDTreeFind <Bar> let g:VimSplitBalancerSupress=0 <CR>
+    " Visual and Select
+    vnoremap <silent> <special> <D-Bar> <Esc> : let g:VimSplitBalancerSupress=1 <Bar> NERDTreeFind <Bar> let g:VimSplitBalancerSupress=0 <CR>
+    " Operator pending
+    onoremap <silent> <special> <D-Bar> <Esc> : let g:VimSplitBalancerSupress=1 <Bar> NERDTreeFind <Bar> let g:VimSplitBalancerSupress=0 <CR>
+
+    " Toggle Focus Between File Tree:
+    " ------------------
+    " Insert, Command-line, Lang-Arg
+    lnoremap <silent> <special> <C-\> <Esc> : let g:VimSplitBalancerSupress=1 <Bar> if &filetype ==# 'nerdtree' <Bar> wincmd p <Bar> else <Bar> NERDTreeFocus <Bar> endif <Bar> let g:VimSplitBalancerSupress=0 <CR>
+    " Normal
+    nnoremap <silent> <special> <C-\> : let g:VimSplitBalancerSupress=1 <Bar> if &filetype ==# 'nerdtree' <Bar> wincmd p <Bar> else <Bar> NERDTreeFocus <Bar> endif <Bar> let g:VimSplitBalancerSupress=0 <CR>
+    " Visual and Select
+    vnoremap <silent> <special> <C-\> <Esc> : let g:VimSplitBalancerSupress=1 <Bar> if &filetype ==# 'nerdtree' <Bar> wincmd p <Bar> else <Bar> NERDTreeFocus <Bar> endif <Bar> let g:VimSplitBalancerSupress=0 <CR>
+    " Operator pending
+    onoremap <silent> <special> <C-\> <Esc> : let g:VimSplitBalancerSupress=1 <Bar> if &filetype ==# 'nerdtree' <Bar> wincmd p <Bar> else <Bar> NERDTreeFocus <Bar> endif <Bar> let g:VimSplitBalancerSupress=0 <CR>
+
+  endif
+  if has("gui_win32")
+    " Toggle File Tree:
+    " ------------------
+    " Insert, Command-line, Lang-Arg
+    lnoremap <silent> <special> <F11> <Esc> : let g:VimSplitBalancerSupress=1 <Bar> NERDTreeToggle <Bar> wincmd p <Bar> let g:VimSplitBalancerSupress=0 <CR>
+    " Normal
+    nnoremap <silent> <special> <F11> : let g:VimSplitBalancerSupress=1 <Bar> NERDTreeToggle <Bar> wincmd p <Bar> let g:VimSplitBalancerSupress=0 <CR>
+    " Visual and Select
+    vnoremap <silent> <special> <F11> <Esc> : let g:VimSplitBalancerSupress=1 <Bar> NERDTreeToggle <Bar> wincmd p <Bar> let g:VimSplitBalancerSupress=0 <CR>
+    " Operator pending
+    onoremap <silent> <special> <F11> <Esc> : let g:VimSplitBalancerSupress=1 <Bar> NERDTreeToggle <Bar> wincmd p <Bar> let g:VimSplitBalancerSupress=0 <CR>
+
+    " TODO: The rest
+
+  endif
+endif
+
+" NERDTreeTabs bindings:
+" if has("gui_running")
+"   if has("gui_macvim")
+"     map <D-e> :NERDTreeTabsToggle<Cr><c-w><c-w><c-w><c-p>
+"     imap <D-e> <Esc>:NERDTreeTabsToggle<Cr><c-w><c-w><c-w><c-p>
+"     vmap <D-e> <Esc>:NERDTreeTabsToggle<Cr><c-w><c-w><c-w><c-p>
+"     nmap <D-e> <Esc>:NERDTreeTabsToggle<Cr><c-w><c-w><c-w><c-p>
+"
+"     map <c-0> :NERDTreeToggle<Cr>
+"     imap <c-0> <Esc>:NERDTreeFocus<Cr>
+"     vmap <c-0> <Esc>:NERDTreeToggle<Cr>
+"     nmap <c-0> <Esc>:NERDTreeToggle<Cr>
+"
+"
+"     map <D-E> :NERDTreeTabsOpen<Cr>:NERDTreeTabsFind<Cr><c-w><c-w><c-w><c-p>
+"     imap <D-E> <Esc>:NERDTreeTabsOpen<Cr>:NERDTreeTabsFind<Cr><c-w><c-w><c-w><c-p>
+"     vmap <D-E> <Esc>:NERDTreeTabsOpen<Cr>:NERDTreeTabsFind<Cr><c-w><c-w><c-w><c-p>
+"     nmap <D-E> <Esc>:NERDTreeTabsOpen<Cr>:NERDTreeTabsFind<Cr><c-w><c-w><c-w><c-p>
+"   endif
+"   if has("gui_win32")
+"     map <F11> :NERDTreeTabsToggle<Cr><c-w><c-w><c-w><c-p>
+"     imap <F11> <Esc>:NERDTreeTabsToggle<Cr><c-w><c-w><c-w><c-p>
+"     vmap <F11> <Esc>:NERDTreeTabsToggle<Cr><c-w><c-w><c-w><c-p>
+"     nmap <F11> <Esc>:NERDTreeTabsToggle<Cr><c-w><c-w><c-w><c-p>
+"   endif
+" endif
+
+
+
+" Clear search highlight when escape is pressed.
+" Is really horrible on terminals.
+" if has("gui_running")
+"   nnoremap <esc> :noh<return><esc>
+" endif
+
+
+" Diagnostics.
+" Quick global shortcuts for toggling the location list or quickfix list
+nmap <script> <silent> <D-d> :call Toggly(1)<CR>
+nmap <script> <silent> <D-D> :call Toggly(0)<CR>
+
+" http://vim.wikia.com/wiki/Get_shortened_messages_from_using_echomsg
+function! s:ShortEcho(msg)
+  let saved=&shortmess
+  set shortmess+=T
+  exe "norm :echomsg a:msg\n"
+  let &shortmess=saved
+endfunction
+function! s:ShortError(msg)
+  echohl Error
+  let saved=&shortmess
+  set shortmess+=T
+  exe "norm :echomsg a:msg\n"
+  let &shortmess=saved
+  echohl none
+endfunction
+
+" From answer here: https://vi.stackexchange.com/questions/1942/how-to-execute-shell-commands-silently
+fun! s:RunCmdOrShowErrorNicely(cmd)
+    silent let f = systemlist(a:cmd)
+    if v:shell_error
+      call s:ShortError("[ERROR]" . join(f, '   '))
+      return
+    endif
+endfun
+
+command! -nargs=+ RunCmdOrShowErrorNicelyCmd call s:RunCmdOrShowErrorNicely(<q-args>)
+nmap <script> <silent> <D-r> :RunCmdOrShowErrorNicelyCmd ./runFromEditor.sh<CR>
+" nmap <script> <silent> <D-R> :RunCmdOrShowErrorNicelyCmd ./runFromEditor.sh
+
+" Clear all forms of highlight when escape is pressed in normal mode.
+" Accounts for strange terminal behavior.
+"
+" http://stackoverflow.com/questions/11940801/mapping-esc-in-vimrc-causes-bizzare-arrow-behaviour
+function! UnhighlightMerlinIfDefined()
+  if exists(":MerlinClearEnclosing")
+    execute "MerlinClearEnclosing"
+  endif
+endfunction
+
+if executable('ocamlmerlin')
+  map <D-l> :MerlinLocate<CR>
+  imap <D-l> <Esc>l:MerlinLocate<CR>
+endif
+
+" Command Shift C triggers reformatting, like Nuclide.
+autocmd FileType reason map <buffer> <D-C> :ReasonPrettyPrint<Cr>
+
+
+
+command -nargs=* DoUnhighlightEverything :call UnhighlightMerlinIfDefined(<f-args>)
+if has('gui_running')
+  nnoremap <silent> <esc>  :nohlsearch<return>:DoUnhighlightEverything<return><esc>
+else
+  " code from above
+  " Still leaves strange characters in terminal when hitting arrow keys in
+  " normal mode!
+  " augroup no_highlight
+  "   autocmd TermResponse * nnoremap <silent> <esc> :nohlsearch<return>:DoUnhighlightEverything<return><esc>
+  " augroup END
+end
+
+
+" Alphabetize on F5
+vmap <F5> :sort ui<Cr>
+
+
+" space through your tabs!
+map <Space> gt
+" shift-space backwards - doesn't work on terminal, I believe
+map <s-Space> gT
+
+" Unfortunately the default `<c-c>` won't cause fuf to exit or cancel a search.
+if g:playWellWithFuzzyFinder
+  " For fuzzyfinder, c-c won't fire insert leave. yet we can't just map to
+  " escape because c-c is more than just that - it also kills any jobs etc.
+  imap <c-c> <esc>
+endif
+
+"Emacs keybindings while inserting.
+" =================================
+
+"We can't map `<c-a>` to `<Esc>I` because that causes leaving of insert mode
+"and that screws up plugins. Instead we use c-o which allows one normal
+"movement without ever leaving insert mode! We should probably use that
+"everywhere. Unfortunately, that doesn't work with fuzzy finder, so we have to
+"use a *worse* behavior (home, as opposed to first non-whitespace char.)
+if g:playWellWithFuzzyFinder
+  imap <C-a> <home>
+else
+  " Uses noremap because we already have c-o mapped.
+  " Hmmmm, this doesn't work - ends up inserting ^ characters sometimes.
+  inoremap <C-a> <c-o>^
+endif
+
+map! <c-e> <End>
+map! <c-f> <Right>
+map! <c-b> <Left>
+map! <c-d> <Delete>
+noremap! <c-n> <Down>
+noremap! <c-p> <Up>
+inoremap <c-g> <c-p>
+
+" Command line (Need to map these once more for inc-search to work).
+cmap <c-a> <Home>
+cmap <c-e> <End>
+cmap <c-f> <Right>
+cmap <c-b> <Left>
+cmap <c-d> <Delete>
+
+
+" TODO: Put this in customFunctions.vim
+function! Preserve(command)
+  " Preparation: save last search, and cursor position.
+  let _s=@/
+  let l = line(".")
+  let c = col(".")
+  " Do the business:
+  execute a:command
+  " Clean up: restore previous search history, and cursor position
+  let @/=_s
+  call cursor(l, c)
+endfunction
+nmap <D-M> :call Preserve("normal gg=G")<CR>
+
+" Rename complete word in file
+nnoremap <expr> <c-s> ':%s/\<'.expand('<cword>').'\>/'.expand('<cword>').'/g<Left><Left>'
+
+
+" auto change directory of file. (really nice, but not always wanted)
+" autocmd BufEnter * execute "chdir ".escape(expand("%:p:h"), ' ')
+if has("gui_running") " all this for gui use
+    "set number
+    if has("gui_macvim")
+        " =====================================================================
+        " Macy key bindings.
+        " =====================================================================
+        " macmenu Window.Toggle\ Full\ Screen\ Mode key=<D-CR>
+        " This is bound in ~/.vim/.bundlesVimRc
+        " http://lifehacker.com/5280456/hide-your-mac-menu-bar-and-dock-for-a-cleaner-desktop
+
+        " Since it makes sense to make c-d match the mac ox/emacs style forward
+        " delete, c-d can't be (shift left in insert mode). Given that, we can
+        " make a better mac os x combo for indenting and unindenting in insert
+        " mode. That frees up c-t
+        inoremap <D-]> <c-t>
+        inoremap <D-[> <c-d>
+
+        " Awesome visual selection maintained when indenting.
+        vmap <D-]> >gv
+        vmap <D-[> <gv
+        " Map Command-# to switch tabs
+        map  <D-0> 0gt
+        imap <D-0> <Esc>0gt
+        map  <D-1> 1gt
+        imap <D-1> <Esc>1gt
+        map  <D-2> 2gt
+        imap <D-2> <Esc>2gt
+        map  <D-3> 3gt
+        imap <D-3> <Esc>3gt
+        map  <D-4> 4gt
+        imap <D-4> <Esc>4gt
+        map  <D-5> 5gt
+        imap <D-5> <Esc>5gt
+        map  <D-6> 6gt
+        imap <D-6> <Esc>6gt
+        map  <D-7> 7gt
+        imap <D-7> <Esc>7gt
+        map  <D-8> 8gt
+        imap <D-8> <Esc>8gt
+        map  <D-9> 9gt
+        imap <D-9> <Esc>9gt
+
+
+
+        " Some Textmatey Shortcuts:
+        imap <D-S-Enter> <End>;<Cr>
+        imap <D-A> <End>;
+
+        " Toggle Spell Check Easily:
+        " Need to find a better replacement:
+        " imap <D-P> <Esc>l:set spell!<Cr>
+        " nmap <D-P> :set spell!<Cr>
+
+        " Toggle between (Previously Viewed) tab.
+        map <D-P> :LastTab<CR>
+        imap <D-P> <Esc>:LastTab<CR>
+
+        " Look at other deeply integrated mappings in the ~/.gvimrc file.
+        map <D-T> <Esc>:Undoquit<CR>
+
+    endif
+    if has('gui_win32')
+      " space through your tabs!
+      map <M-}> gt
+      " shift-space backwards - doesn't work on terminal, I believe
+      map <M-{> gT
+      imap <M-}> <Esc>gt
+      " shift-space backwards - doesn't work on terminal, I believe
+      imap <M-{> <Esc>gT
+
+      nmap <F13> :q<Cr>
+      imap <F13> <Esc>:q<Cr>
+      nmap <F14> :qall<Cr>
+      imap <F14> <Esc>:qall<Cr>
+      nmap <F17> :tabnew<Cr>
+      imap <F17> <Esc> :tabnew<Cr>
+      vmap <F17> <Esc> :tabnew<Cr>
+      nmap <F16> :w<Cr>
+      imap <F16> <Esc>:w<Cr>l
+      vmap <F16> <Esc>:w<Cr>
+      " Look at other deeply integrated mappings in the ~/.gvimrc file.
+      map <F18> <Esc>:Undoquit<CR>
+    endif
+endif
+
+
+" vim-surround config
+" Simply select visual ranges, then press any of the surround characters to
+" automatically surround them.
+vmap ( S(
+vmap ) S)
+vmap [ S[
+vmap ] S]
+vmap ' S'
+" vmap " S"
+" vmap * S*
+vmap ` S`

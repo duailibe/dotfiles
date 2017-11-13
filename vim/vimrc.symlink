@@ -1,4 +1,109 @@
-syntax on
+set nocompatible
 
-" Wrap gitcommit file types at the appropriate length
-filetype indent plugin on
+silent! call plug#begin('~/.vim_bundle')
+
+" Don't make backups
+set noswapfile
+set nowritebackup
+set nobackup
+
+syntax on
+set virtualedit=block
+set nonumber
+
+set mouse=a
+set nospell
+set ic
+set scs
+
+set nowrap
+set wrapmargin=0
+set nolinebreak
+
+set hlsearch
+set formatoptions+=or
+
+" Tabs => spaces
+set tabstop=2
+set expandtab
+set shiftwidth=2
+
+set ignorecase
+set infercase
+set wildmode=full
+set wildignore+=*/node_modules/**
+set sm!
+
+" Disable visualbell
+set visualbell
+set t_vb=
+
+" Disable Vim's startup screen
+set shortmess+=I
+
+" Mac Support bootstrap
+set wildignore+=*.DS_Store
+set wildignore+=*/_build**
+set wildignore+=*/.ssh
+set wildignore+=*/.yarn
+set wildignore+=*/.npm
+
+" Remove ugly folds
+set nofoldenable
+" nofoldenable doesn't work in diff mode so do something similar
+set diffopt=filler,context:9999
+
+" Persist undo history
+set undofile
+set undodir=~/.vim/undo/
+
+" Load the bundles
+source ~/.vim/plugs.vim
+call plug#end()
+
+set background=dark
+colorscheme one
+
+" MacVim Quick Start is pretty strange. It's as if it always opens the *next*
+" MacVim window whenever you open the currently visible one.
+" So this prompt applies to the *next* window you'll open typically - in that
+" case.
+" Notice the ! not
+if !len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  " Everything's already installed. Configure the plugins
+  source ~/.vim/gui.vim
+  source ~/.vim/keys.vim
+  source ~/.vim/functions.vim
+  " Some vim reset plugin screws up listchars
+  set listchars = "eol:$"
+else
+  " Don't show statusline when airline might not be loaded or configured.
+  if has('gui') && has('mac') && has('gui_running')
+    set background=dark
+    set guioptions-=r
+    set guioptions-=R
+    set guioptions-=l
+    set guioptions-=L
+    " The backticks and echo make it work better in terminal env
+    autocmd VimEnter *
+      \  if len(filter(values(g:plugs), '!isdirectory(v:val.dir)')) && 1==confirm("Download and Install Plugins?", "&Yes\n&No", 1)
+      \|   set laststatus=0
+      \|   PlugInstall --sync | echomsg "Open a new window to enjoy the plugins!" | let xx=confirm("Open a New Window For Plugins to Take Effect.")
+      \| endif
+    " Source the settings just in case they respond with "No, don't update plugins"
+    source ~/.vim/gui.vim
+    source ~/.vim/keys.vim
+    source ~/.vim/functions.vim
+    " Some vim reset plugin screws up listchars
+    set listchars = "eol:$"
+  else
+    set laststatus=0
+    echomsg "Attempting to install plugins. Be patient. Vim is working in the background. It will start eventually."
+    PlugInstall --sync
+    source ~/.vim/gui.vim
+    source ~/.vim/keys.vim
+    source ~/.vim/functions.vim
+    " Some vim reset plugin screws up listchars
+    set listchars = "eol:$"
+  endif
+endif	
