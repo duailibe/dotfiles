@@ -21,6 +21,10 @@ if has('gui_running')
     let g:vimBoxLinterWarningSymbol="⮿"
     let g:vimBoxLinterOkSymbol="☻"
   endif
+else
+  let g:vimBoxLinterErrorSymbol=">"
+  let g:vimBoxLinterWarningSymbol=">"
+  let g:vimBoxLinterOkSymbol="☻"
 endif
 
 augroup vimrc

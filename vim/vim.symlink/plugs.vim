@@ -24,12 +24,13 @@ Plug 'jordwalke/VimCloser'
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+let g:airline_theme='one'
 source ~/.vim/plugins.rc/airline.vim
 if has("gui_macvim") || has("gui_vimr")
   autocmd VimEnter * set guioptions+=e
 endif
 
-Plug 'scrooloose/syntastic'
+Plug 'vim-syntastic/syntastic'
 " TODO: Disable signs in merlin/syntastic, and only use the VimHint strategy of
 " underlining *just* the region of error.
 let g:syntastic_enable_signs=0
@@ -83,10 +84,11 @@ let g:ctrlp_match_window_bottom = 1
 let g:ctrlp_match_window = 'bottom,order:btt,min:13,max:13'
 let g:ctrlp_use_caching = 1
 let g:ctrlp_clear_cache_on_exit=0
-let g:ctrlp_show_hidden = 1
+let g:ctrlp_show_hidden = 0
 let g:ctrlp_mruf_max = 250
 let g:ctrlp_max_depth = 7
 let g:ctrlp_max_files = 30000
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 
 let g:ctrlp_prompt_mappings = {
       \ 'CreateNewFile()':      [''],
@@ -137,3 +139,5 @@ Plug 'AndrewRadev/splitjoin.vim'
 
 Plug 'ntpeters/vim-better-whitespace'
 let g:strip_whitespace_on_save = 1
+
+Plug 'prettier/vim-prettier'
