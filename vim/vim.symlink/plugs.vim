@@ -141,3 +141,14 @@ Plug 'ntpeters/vim-better-whitespace'
 let g:strip_whitespace_on_save = 1
 
 Plug 'prettier/vim-prettier'
+" Override vim-prettier defaults to prettier defaults
+g:prettier#config#print_width = 80
+g:prettier#config#tab_width = 2
+g:prettier#config#use_tabs = 'false'
+g:prettier#config#semi = 'true'
+g:prettier#config#single_quote = 'false'
+g:prettier#config#trailing_comma = 'none'
+g:prettier#config#bracket_spacing = 'true'
+g:prettier#config#jsx_bracket_same_line = 'false'
+g:prettier#config#parser = 'babylon'
+g:prettier#config#config_precedence = 'prefer-file'
