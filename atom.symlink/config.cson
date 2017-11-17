@@ -8,7 +8,6 @@
     enableAutoActivation: false
   core:
     disabledPackages: [
-      "vim-mode-plus"
       "linter"
       "atom-ide-ui"
       "ide-flowtype"
@@ -34,6 +33,8 @@
     preferredLineLength: 100
   "exception-reporting":
     userId: "c48ac152-7102-ae12-c9d6-2aafd0240b51"
+  "linter-ui-default":
+    panelHeight: 81
   "prettier-atom":
     formatOnSaveOptions:
       showInStatusBar: true
