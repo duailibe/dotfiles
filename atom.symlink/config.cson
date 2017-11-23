@@ -51,7 +51,9 @@
   "tree-view":
     hideIgnoredNames: true
   "vim-mode-plus":
+    automaticallyEscapeInsertModeOnActivePaneItemChange: true
     incrementalSearch: true
+    keymapPToPutWithAutoIndent: true
   welcome:
     showOnStartup: false
   whitespace:
