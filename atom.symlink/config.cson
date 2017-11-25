@@ -7,11 +7,6 @@
     confirmCompletion: "tab"
     enableAutoActivation: false
   core:
-    disabledPackages: [
-      "linter"
-      "atom-ide-ui"
-      "ide-flowtype"
-    ]
     ignoredNames: [
       ".git"
       ".hg"
