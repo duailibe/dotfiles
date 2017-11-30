@@ -30,17 +30,7 @@
     userId: "c48ac152-7102-ae12-c9d6-2aafd0240b51"
   "linter-ui-default":
     panelHeight: 81
-  "prettier-atom":
-    formatOnSaveOptions:
-      showInStatusBar: true
-      whitelistedGlobs: [
-        "*.js"
-      ]
-    prettierOptions:
-      printWidth: 100
-      singleQuote: true
-      trailingComma: "es5"
-    useEslint: true
+  mprettier: {}
   "reason-refmt":
     useLinter: false
   "tree-view":
