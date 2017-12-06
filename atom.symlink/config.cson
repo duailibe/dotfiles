@@ -4,8 +4,17 @@
     "atom-ide-diagnostics-ui":
       showDiagnosticTraces: true
   "autocomplete-plus":
+    backspaceTriggersAutocomplete: true
     confirmCompletion: "tab"
-    enableAutoActivation: false
+    defaultProvider: "Symbol"
+    enableExtendedUnicodeSupport: true
+    strictMatching: true
+    suppressActivationForEditorClasses: [
+      "vim-mode-plus.normal-mode"
+      "vim-mode-plus.visual-mode"
+      "vim-mode-plus.operator-pending-mode"
+      "vim-mode-plus.insert-mode.replace"
+    ]
   core:
     ignoredNames: [
       ".git"
@@ -35,6 +44,10 @@
   mprettier: {}
   "reason-refmt":
     useLinter: false
+  "spell-check":
+    locales: [
+      "en-US"
+    ]
   "tree-view":
     hideIgnoredNames: true
   "vim-mode-plus":
