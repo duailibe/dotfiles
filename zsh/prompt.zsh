@@ -6,10 +6,9 @@ autoload -Uz vcs_info
 
 zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' use-simple true
-zstyle ':vcs_info:*' max-exports 2
+zstyle ':vcs_info:*' max-exports 1
 # export branch (%b) and git toplevel (%R)
 zstyle ':vcs_info:git*' formats '%b' '%R'
-zstyle ':vcs_info:git*' actionformats '%b|%a' '%R'
 
 PROMPT='%(12V.%F{242}%12v%f .)❯ '
 
@@ -33,7 +32,7 @@ git_branch() {
 }
 
 git_unpushed() {
-  command git rev-list --count HEAD...@'{u}'
+  command git rev-list --count HEAD...@'{u}' 2>/dev/null
 }
 
 render() {
@@ -49,7 +48,8 @@ render() {
   if [[ -n $vcs_info_msg_0_ ]]; then
     parts+=($(git_branch))
 
-    if (( $(git_unpushed) > 0 )); then
+    local unpushed=$(git_unpushed)
+    if [[ -n $unpushed ]] && (( $unpushed > 0 )); then
       parts+=('%F{cyan}⇡%f')
     fi
   fi
