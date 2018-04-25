@@ -28,6 +28,10 @@ do
   source $file
 done
 
+# initialize prompt
+autoload -U promptinit
+promptinit
+
 # alt+backspace delete word like bash
 autoload -U select-word-style
 select-word-style bash

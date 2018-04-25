@@ -1,91 +1,119 @@
-autoload colors && colors
-# cheers, @ehrenmurdick
-# http://github.com/ehrenmurdick/config/blob/master/zsh/prompt.zsh
+# Adapted from http://github.com/ehrenmurdick/config/blob/master/zsh/prompt.zsh
+# and https://github.com/sindresorhus/pure
 
-if (( $+commands[git] ))
-then
-  git="$commands[git]"
-else
-  git="/usr/bin/git"
+autoload colors && colors
+autoload -Uz vcs_info
+
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:*' use-simple true
+zstyle ':vcs_info:*' max-exports 2
+# export branch (%b) and git toplevel (%R)
+zstyle ':vcs_info:git*' formats '%b' '%R'
+zstyle ':vcs_info:git*' actionformats '%b|%a' '%R'
+
+PROMPT='%(12V.%F{242}%12v%f .)❯ '
+
+if [[ -z $prompt_newline ]]; then
+  typeset -g prompt_newline=$'\n%{\r%}'
 fi
 
 git_branch() {
-  echo $($git symbolic-ref HEAD 2>/dev/null | awk -F/ {'print $NF'})
+  setopt localoptions noshwordsplit
+
+  local git_color=green
+  local dirty=''
+
+  test -z "$(command git status --porcelain --ignore-submodules -unormal)"
+  if (( $? != 0 )); then
+    git_color=red
+    dirty='*'
+  fi
+
+  echo "%F{$git_color}${vcs_info_msg_0_}${dirty}%f"
 }
 
-git_dirty() {
-  if $(! $git status -s &> /dev/null)
-  then
-    echo ""
-  else
-    if [[ $($git status --porcelain) == "" ]]
-    then
-      echo "on %{$fg_bold[green]%}$(git_prompt_info)%{$reset_color%}"
-    else
-      echo "on %{$fg_bold[red]%}$(git_prompt_info)%{$reset_color%}"
+git_unpushed() {
+  command git rev-list --count HEAD...@'{u}'
+}
+
+render() {
+  setopt localoptions noshwordsplit
+
+  # initialize the array
+  local -a parts
+
+  # set the path
+  parts+=('%F{242}%~%f')
+
+  vcs_info
+  if [[ -n $vcs_info_msg_0_ ]]; then
+    parts+=($(git_branch))
+
+    if (( $(git_unpushed) > 0 )); then
+      parts+=('%F{cyan}⇡%f')
     fi
   fi
-}
 
-git_prompt_info () {
- ref=$($git symbolic-ref HEAD 2>/dev/null) || return
-# echo "(%{\e[0;33m%}${ref#refs/heads/}%{\e[0m%})"
- echo "${ref#refs/heads/}"
-}
-
-unpushed () {
-  $git cherry -v @{upstream} 2>/dev/null
-}
-
-need_push () {
-  if [[ $(unpushed) == "" ]]
-  then
-    echo " "
-  else
-    echo " with %{$fg_bold[magenta]%}unpushed%{$reset_color%} "
+  local cleaned_ps1=$PROMPT
+  local -H MATCH MBEGIN MEND
+  if [[ $PROMPT = *$prompt_newline* ]]; then
+		# When the prompt contains newlines, we keep everything before the first
+		# and after the last newline, leaving us with everything except the
+		# preprompt. This is needed because some software prefixes the prompt
+		# (e.g. virtualenv).
+		cleaned_ps1=${PROMPT%%${prompt_newline}*}${PROMPT##*${prompt_newline}}
   fi
+  unset MATCH MBEGIN MEND
+
+  local -ah ps1
+  ps1=(
+    $prompt_newline
+    ${(j. .)parts}
+    $prompt_newline
+    $cleaned_ps1
+  )
+
+  PROMPT="${(j..)ps1}"
 }
 
-ruby_version() {
-  if (( $+commands[rbenv] ))
-  then
-    echo "$(rbenv version | awk '{print $1}')"
-  fi
+set_title() {
+  setopt localoptions noshwordsplit
 
-  if (( $+commands[rvm-prompt] ))
-  then
-    echo "$(rvm-prompt | awk '{print $1}')"
-  fi
+  # don't set title over serial console
+  case $TTY in
+    /dev/ttyS[0-9]*) return;;
+  esac
+
+  # tell the terminal we are setting the title
+  print -n '\e]0;'
+
+  # show hostname if connected through ssh
+  [[ -n $SSH_CONNECTION ]] && print -Pn '(%m) '
+
+  case $1 in
+    expand-prompt)
+      print -Pn $2;;
+    ignore-escape)
+      print -rn $2;;
+  esac
+
+  # end set title
+  print -n '\a'
 }
 
-venv_prompt() {
-  if [[ -n "$VIRTUAL_ENV" ]]
-  then
-    if [[ -f "$VIRTUAL_ENV/__name__" ]]
-    then
-      local name=`cat $VIRTUAL_ENV/__name__`
-    elif [[ `basename $VIRTUAL_ENV` = "__" ]]
-    then
-      local name=$(basename $(dirname $VIRTUAL_ENV))
-    else
-      local name=$(basename $VIRTUAL_ENV)
-    fi
-    echo "%{$fg_bold[yellow]%}($name)%{$reset_color%} "
-  else
-    echo ""
-  fi
-}
-
-directory_name() {
-  echo "%{$fg_bold[cyan]%}%1/%\/%{$reset_color%}"
-}
-
-export PROMPT=$'\n$(venv_prompt)in $(directory_name) $(git_dirty)$(need_push)\n› '
-set_prompt () {
-  export RPROMPT="%{$fg_bold[cyan]%}%{$reset_color%}"
+preexec() {
+  # shows the current dir and executed command in the title while a process is active
+  set_title 'ignore-escape' "$PWD:t: $2"
 }
 
 precmd() {
-  title "zsh" "%m" "%55<...<%~"
-  set_prompt
+  # shows the full path in the title
+  set_title 'expand-prompt' '%~'
+
+  psvar[12]=
+  if [[ -n $VIRTUAL_ENV ]]; then
+    psvar[12]="${VIRTUAL_ENV:t}"
+  fi
+
+  render
 }
