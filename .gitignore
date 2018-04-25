@@ -8,4 +8,8 @@ atom.symlink/storage
 atom.symlink/themes
 atom.symlink/recovery
 
+hyper/hyper_plugins.symlink/cache
+hyper/hyper_plugins.symlink/node_modules
+hyper/hyper_plugins.symlink/package.json
+
 git/gitconfig.local.symlink
