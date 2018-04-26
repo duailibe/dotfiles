@@ -7,8 +7,9 @@ autoload -Uz vcs_info
 zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' use-simple true
 zstyle ':vcs_info:*' max-exports 1
-# export branch (%b) and git toplevel (%R)
-zstyle ':vcs_info:git*' formats '%b' '%R'
+# export branch (%b)
+zstyle ':vcs_info:git*' formats '%b'
+zstyle ':vcs_info:git*' actionformats '%b|%a'
 
 PROMPT='%(12V.%F{242}%12v%f .)❯ '
 
