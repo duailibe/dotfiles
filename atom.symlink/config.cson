@@ -1,6 +1,7 @@
 "*":
   "atom-ide-ui":
-    "atom-ide-code-format": {}
+    "atom-ide-code-format":
+      formatOnType: false
     "atom-ide-diagnostics-ui":
       showDiagnosticTraces: true
   "autocomplete-plus":
@@ -16,6 +17,9 @@
       "vim-mode-plus.insert-mode.replace"
     ]
   core:
+    disabledPackages: [
+      "autoflow"
+    ]
     ignoredNames: [
       ".git"
       ".hg"
@@ -29,7 +33,7 @@
     telemetryConsent: "limited"
     themes: [
       "atom-dark-ui"
-      "atom-dark-syntax"
+      "one-dark-syntax"
     ]
   editor:
     fontFamily: "Fira Code"
@@ -37,10 +41,13 @@
     preferredLineLength: 100
   "exception-reporting":
     userId: "c48ac152-7102-ae12-c9d6-2aafd0240b51"
+  "ide-flowtype":
+    autoDownloadFlowBinaries: false
+    tryFlowBin: true
   "linter-ui-default":
     panelHeight: 81
   "markdown-preview":
-    useGitHubStyle: true
+    breakOnSingleNewline: true
   mprettier: {}
   "reason-refmt":
     useLinter: false
