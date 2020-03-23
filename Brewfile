@@ -24,12 +24,14 @@ cask "atom"
 cask "dropbox"
 cask "firefox"
 cask "google-chrome"
+cask "kap"
 cask "macpass"
 cask "postman"
+cask "rectangle"
+cask "slack"
 cask "spectacle"
 cask "spotify"
 cask "vlc"
 cask "whatsapp"
 
 mas "The Unarchiver", id: 425424353
-mas "Things3", id: 904280696

@@ -39,6 +39,7 @@
     fontFamily: "Fira Code"
     fontSize: 11
     preferredLineLength: 100
+    showInvisibles: true
   "exception-reporting":
     userId: "c48ac152-7102-ae12-c9d6-2aafd0240b51"
   "ide-flowtype":
@@ -55,6 +56,7 @@
     locales: [
       "en-US"
     ]
+  "status-bar": {}
   "tree-view":
     hideIgnoredNames: true
   "vim-mode-plus":
@@ -65,3 +67,6 @@
     showOnStartup: false
   whitespace:
     ignoreWhitespaceOnCurrentLine: false
+".java.source":
+  editor:
+    tabLength: 4
