@@ -13,7 +13,6 @@ brew "grc"
 brew "heroku"
 brew "postgresql"
 brew "mas"
-brew "pyenv"
 brew "youtube-dl"
 
 cask "1password"
