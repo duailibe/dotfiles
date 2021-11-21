@@ -10,13 +10,11 @@ if ! which brew &> /dev/null; then
   success "Done"
 fi
 
-cd $here
-
 _task() {
-  brew update
-  brew bundle --no-lock
-  brew upgrade
-  brew cleanup
+  runcmd "brew update"
+  runcmd "brew bundle --no-lock --file $here/Brewfile"
+  runcmd "brew upgrade"
+  runcmd "brew cleanup"
 }
 
 task "Installing/upgrading Homebrew packages" _task

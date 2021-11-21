@@ -12,9 +12,9 @@ enter_sudo
 
 if ! xcode-select --print-path &> /dev/null; then
   _xcode_install() {
-    xcode-select --install
+    runcmd "xcode-select --install"
   }
   task "Installing Xcode command line tools" _xcode_install
 fi
 
-sh "$dotfiles/bin/dot"
+sh -c "$dotfiles/bin/dot"

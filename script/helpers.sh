@@ -1,32 +1,43 @@
 # Helper functions
 
+set -eo pipefail
+
 info() {
-  printf "\r  [ \033[00;34m..\033[0m ] $1"
+  printf "\r[ \033[00;34m..\033[0m ] $1"
+}
+
+logcmd() {
+  printf "\033[2m› $1\033[22m\n"
 }
 
 user() {
-  printf "\r  [ \033[0;33m??\033[0m ] $1 "
+  printf "\r\033[2K[ \033[0;33m??\033[0m ] $1 "
 }
 
 success() {
-  printf "\r\033[2K  [ \033[00;32mOK\033[0m ] $1\n"
+  printf "\r\033[2K[ \033[00;32mOK\033[0m ] $1\n"
 }
 
 fail() {
-  printf "\r\033[2K  [\033[0;31mFAIL\033[0m] $1\n"
+  printf "\r\033[2K[\033[0;31mFAIL\033[0m] $1\n"
   echo "$2\n"
-  exit
+  exit 1
 }
 
 task() {
   info "$1"
-  local output=
-  output=$($2 2>&1)
-  if [ $? -ne 0 ]; then
+  local output= exit_code=0
+  output=$($2 2>&1) || exit_code=$?
+  if ! [ $exit_code -eq 0 ]; then
     fail "$1" "$output"
   else
     success "$1"
   fi
+}
+
+runcmd() {
+  logcmd "$1"
+  sh -c "$1"
 }
 
 symlink() {
