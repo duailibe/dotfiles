@@ -3,7 +3,7 @@
 dotfiles="$HOME/.dotfiles"
 
 if [ ! -e "$dotfiles" ]; then
-  git clone --quiet --depth 1 https://github.com/duailibe/dotfiles.git $dotfiles
+  git clone --quiet --depth 1 https://github.com/duailibe/dotfiles.git "$dotfiles"
 fi
 
 source "$dotfiles/script/helpers.sh"

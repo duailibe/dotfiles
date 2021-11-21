@@ -3,30 +3,32 @@
 set -eo pipefail
 
 info() {
-  printf "\r[ \033[00;34m..\033[0m ] $1"
+  printf "\r[ \033[00;34m..\033[0m ] %s" "$1"
 }
 
 logcmd() {
-  printf "\033[2m› $1\033[22m\n"
+  printf "\033[2m› %s\033[22m\n" "$1"
 }
 
 user() {
-  printf "\r\033[2K[ \033[0;33m??\033[0m ] $1 "
+  printf "\r\033[2K[ \033[0;33m??\033[0m ] %s " "$1"
 }
 
 success() {
-  printf "\r\033[2K[ \033[00;32mOK\033[0m ] $1\n"
+  printf "\r\033[2K[ \033[00;32mOK\033[0m ] %s\n" "$1"
 }
 
 fail() {
-  printf "\r\033[2K[\033[0;31mFAIL\033[0m] $1\n"
-  echo "$2\n"
+  printf "\r\033[2K[\033[0;31mFAIL\033[0m] %s\n" "$1"
+  if [ -n "$2" ]; then
+    printf "%s\n" "$2"
+  fi
   exit 1
 }
 
 task() {
   info "$1"
-  local output= exit_code=0
+  local output="" exit_code=0
   output=$($2 2>&1) || exit_code=$?
   if ! [ $exit_code -eq 0 ]; then
     fail "$1" "$output"
@@ -42,21 +44,20 @@ runcmd() {
 
 symlink() {
   cyan() {
-    printf "\033[00;36m$1\033[0m"
+    printf "\033[00;36m%s\033[0m" "$1"
   }
 
   local src="$1" dst="$2"
   local action=""
 
-  if [ -f "$dst" -o -d "$dst" -o -L "$dst" ]; then
+  if [ -f "$dst" ] || [ -d "$dst" ] || [ -L "$dst" ]; then
 
-    if [ "$(readlink $dst)" == "$src" ]; then
+    if [ "$(readlink "$dst")" == "$src" ]; then
       return
     else
 
-      user "File already exists: $dst, what do you want to do?\n\
-      [s]kip, [o]verwrite, [b]ackup?"
-      read -n 1 action
+      user "File already exists: $dst. [S]kip, [o]verwrite or [backup]?"
+      read -r -n 1 action
       echo
 
       case "$action" in
@@ -84,7 +85,7 @@ symlink() {
   fi
 
   ln -s "$1" "$2"
-  success "linked \033[00;36m$1\033[0m to \033[00;36m$2\033[0m"
+  success "linked $(cyan "$1") to $(cyan "$2")"
 }
 
 __in_sudo=false
