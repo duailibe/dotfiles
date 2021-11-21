@@ -1,0 +1,17 @@
+colorscheme default
+
+filetype indent plugin on
+syntax on
+
+set softtabstop=2
+set expandtab
+
+" Show numbers
+set number
+set showcmd
+
+" Stops gitcommit from auto wrapping
+au Filetype gitcommit call SetGitCommit()
+func SetGitCommit()
+    setlocal formatoptions-=tl
+endfunc
