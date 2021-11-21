@@ -1,21 +1,20 @@
 #!/bin/sh
-#
-# dot
-#
-# `dot` handles installation, updates, things like that. Run it periodically
-# to make sure you're on the latest and greatest.
-export ZSH=$HOME/.dotfiles
 
-# Set macOS defaults
-$ZSH/macos/set-defaults.sh
+dotfiles="$HOME/.dotfiles"
+source "$dotfiles/script/helpers.sh"
 
-# Install homebrew
-$ZSH/homebrew/install.sh 2>&1
+enter_sudo
 
-# Upgrade homebrew
-echo "› brew update"
-brew update
+cd $dotfiles
 
-# Install software
-echo "› $ZSH/script/install"
-$ZSH/script/install
+for topic in git homebrew; do
+	sh "$dotfiles/$topic/setup.sh"
+done
+
+setups=$(find * -name "setup.sh" \
+            -not -wholename "git/*" \
+            -not -wholename "homebrew/*")
+
+for setup in $setups; do
+	sh "$dotfiles/$setup"
+done
