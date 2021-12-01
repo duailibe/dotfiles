@@ -18,4 +18,3 @@ if test ! -z c
 
   complete -c c -f -a "(__c_complete)"
 end
-
