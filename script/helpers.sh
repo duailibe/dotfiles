@@ -2,6 +2,10 @@
 
 set -eo pipefail
 
+if [[ "$(uname -m)" == "arm64" ]] && [[ ":${PATH}:" != *:/opt/homebrew/bin:* ]]; then
+  export PATH=/opt/homebrew/bin:$PATH
+fi
+
 info() {
   printf "\r[ \033[00;34m..\033[0m ] %s " "$1"
 }
