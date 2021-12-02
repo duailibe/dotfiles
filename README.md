@@ -5,7 +5,7 @@ These are my dotfiles, forked from [holman's](http://github.com/holman/dotfiles)
 ## Install
 
 ```sh
-curl -L https://git.io/J1Qn3 | sh
+curl -L https://git.io/dualdot | sh
 ```
 
 ## How it works
