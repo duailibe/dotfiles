@@ -3,7 +3,10 @@
 dotfiles="$HOME/.dotfiles"
 
 if [ ! -e "$dotfiles" ]; then
-  git clone --quiet --depth 1 https://github.com/duailibe/dotfiles.git "$dotfiles"
+  tmp=$(mktemp)
+  curl -LsSo "$tmp" https://github.com/duailibe/dotfiles/tarball/main
+  mkdir "$dotfiles"
+  tar -xzf "$tmp" --directory "$dotfiles" --strip-components 1
 fi
 
 source "$dotfiles/script/helpers.sh"
@@ -12,9 +15,20 @@ enter_sudo
 
 if ! xcode-select --print-path &> /dev/null; then
   _xcode_install() {
-    runcmd "xcode-select --install"
+    runcmd "xcode-select --install &> /dev/null"
+
+    until xcode-select --print-path &> /dev/null; do
+      sleep 5
+    done
   }
   task "Installing Xcode command line tools" _xcode_install
 fi
 
 sh -c "$dotfiles/bin/dot"
+
+if [ command -v git &> /dev/null ] || [ ! -e "$dotfiles/.git" ]; then
+  cd $dotfiles
+  git init -q -b main
+  git remote add origin "https://github.com/duailibe/dotfiles.git"
+  git fetch -q origin
+fi
