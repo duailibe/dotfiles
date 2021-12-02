@@ -21,6 +21,6 @@ info "Update macOS software"
 echo
 runcmd "sudo softwareupdate -i -a"
 
-if command -v "mas";
+if command -v "mas"; then
   runcmd "mas upgrade"
 fi
