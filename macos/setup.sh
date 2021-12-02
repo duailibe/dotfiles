@@ -20,4 +20,7 @@ enter_sudo
 info "Update macOS software"
 echo
 runcmd "sudo softwareupdate -i -a"
-runcmd "mas upgrade"
+
+if command -v "mas";
+  runcmd "mas upgrade"
+fi
