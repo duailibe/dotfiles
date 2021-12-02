@@ -7,13 +7,14 @@ enter_sudo
 
 cd $dotfiles
 
-for topic in homebrew; do
-	sh "$dotfiles/$topic/setup.sh"
+for topic in macos homebrew; do
+  sh "$dotfiles/$topic/setup.sh"
 done
 
 setups=$(find * -name "setup.sh" \
+            -not -wholename "macos/*"
             -not -wholename "brew/*")
 
 for setup in $setups; do
-	sh "$dotfiles/$setup"
+  sh "$dotfiles/$setup"
 done
