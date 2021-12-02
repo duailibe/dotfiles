@@ -7,9 +7,17 @@
 dotfiles="$HOME/.dotfiles"
 source "$dotfiles/script/helpers.sh"
 
-_task() {
-  runcmd "sudo softwareupdate -i -a"
-  runcmd "mas upgrade"
-}
+theme="$(defaults read com.apple.Terminal "Default Window Settings")"
+if [ ! "$theme" == "Snazzy" ]; then
+  _theme() {
+    osascript "$dotfiles/macos/set-terminal-theme.applescript"
+  }
+  task "Install Terminal theme" _theme
+fi
 
-task "Updating macOS software" _task
+enter_sudo
+
+info "Update macOS software"
+echo
+runcmd "sudo softwareupdate -i -a"
+runcmd "mas upgrade"
