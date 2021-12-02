@@ -4,6 +4,11 @@ tap "homebrew/cask-fonts"
 tap "homebrew/core"
 tap "homebrew/services"
 
+# dependencies
+brew "gnupg"
+brew "openssl"
+brew "readline"
+
 brew "asdf"
 brew "coreutils"
 brew "fish"
@@ -11,13 +16,7 @@ brew "gh"
 brew "git"
 brew "grc"
 brew "mas"
-brew "postgresql"
 brew "terminal-notifier"
-
-# dependencies
-brew "gnupg"
-brew "openssl"
-brew "readline"
 
 # apps
 cask "1password"
