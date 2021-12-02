@@ -3,9 +3,14 @@
 dotfiles="$HOME/.dotfiles"
 source "$dotfiles/script/helpers.sh"
 
-if ! [ -e "$HOME/.gitconfig.local" ]; then
-  # git_name="" git_email=""
+if ! gh auth status &> /dev/null; then
+  info "Authenticate with GitHub"
+  echo
 
+  gh auth login
+fi
+
+if ! [ -e "$HOME/.gitconfig.local" ]; then
   info "Setting up local gitconfig"
 
   user "Type your name:"
