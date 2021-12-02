@@ -2,6 +2,7 @@
 
 dotfiles="$HOME/.dotfiles"
 
+# Download dotfiles
 if [ ! -e "$dotfiles" ]; then
   tmp=$(mktemp)
   curl -LsSo "$tmp" https://github.com/duailibe/dotfiles/tarball/main
@@ -9,10 +10,10 @@ if [ ! -e "$dotfiles" ]; then
   tar -xzf "$tmp" --directory "$dotfiles" --strip-components 1
 fi
 
+# Load helpers
 source "$dotfiles/script/helpers.sh"
 
-enter_sudo
-
+# Install Xcode CLI tools
 if ! xcode-select --print-path &> /dev/null; then
   _xcode_install() {
     runcmd "xcode-select --install &> /dev/null"
@@ -24,7 +25,11 @@ if ! xcode-select --print-path &> /dev/null; then
   task "Installing Xcode command line tools" _xcode_install
 fi
 
-sh -c "$dotfiles/bin/dot"
+sh "$dotfiles/bin/dot"
+
+# We only want to run this once
+sh "$dotfiles/macos/set-defaults.sh"
+echo
 
 if [ command -v git &> /dev/null ] || [ ! -e "$dotfiles/.git" ]; then
   cd $dotfiles
