@@ -55,6 +55,9 @@ _general() {
     # Accelerated playback when adjusting the window size
     defaults write -g NSWindowResizeTime -float 0.001
 
+    # Show battery percentage in menu bar
+    defaults write com.apple.menuextra.battery ShowPercent -string 'YES'
+
     killall "SystemUIServer" &> /dev/null
 
 
