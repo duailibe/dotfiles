@@ -20,6 +20,7 @@ brew "terminal-notifier"
 
 # apps
 cask "1password"
+cask "actual"
 cask "dropbox"
 cask "google-chrome"
 cask "kap"
