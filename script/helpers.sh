@@ -3,7 +3,7 @@
 set -eo pipefail
 
 info() {
-  printf "\r[ \033[00;34m..\033[0m ] %s" "$1"
+  printf "\r[ \033[00;34m..\033[0m ] %s " "$1"
 }
 
 logcmd() {
