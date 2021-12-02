@@ -3,13 +3,6 @@
 dotfiles="$HOME/.dotfiles"
 source "$dotfiles/script/helpers.sh"
 
-if ! brew list asdf &> /dev/null; then
-  _task() {
-    brew install asdf
-  }
-  task "Installing asdf" _task
-fi
-
 asdf="$(brew --prefix asdf)/bin/asdf"
 plugins="$("$asdf" plugin list)"
 
