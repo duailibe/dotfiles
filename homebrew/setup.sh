@@ -4,7 +4,7 @@ dotfiles="$HOME/.dotfiles"
 here="$dotfiles/homebrew"
 source "$dotfiles/script/helpers.sh"
 
-if ! which brew &> /dev/null; then
+if ! command -v brew &> /dev/null; then
   enter_sudo
   _task() {
     printf "\n" | /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
