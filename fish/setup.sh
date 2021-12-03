@@ -22,7 +22,7 @@ find "$here" -type f -not -wholename "$here/setup.sh" | while read -r file; do
   symlink "$file" "$dest"
 done
 
-if ! fish -c "command -v fisher" &> /dev/null; then
+if ! fish -c "fisher" &> /dev/null; then
   _fisher() {
     fish -c "curl -sL https://git.io/fisher | source && fisher update"
   }
