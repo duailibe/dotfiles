@@ -223,8 +223,11 @@ _finder_and_spotlight() {
     # Disable warning when changing a file extension
     defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
 
-    # Use list view in all Finder windows by default
-    defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
+    # Use column view in all Finder windows by default
+    defaults write com.apple.finder FXPreferredViewStyle -string "clmv"
+
+    # Set home as the default location for new Finder windows
+    defaults write com.apple.finder NewWindowTargetPath -string "file://$HOME/"
 
     # Show icons for hard drives, servers, and removable media on the desktop
     defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
