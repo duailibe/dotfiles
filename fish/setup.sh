@@ -4,6 +4,7 @@ dotfiles="$HOME/.dotfiles"
 here="$dotfiles/fish"
 fish="$HOME/.config/fish"
 
+# shellcheck source=script/helpers.sh
 source "$dotfiles/script/helpers.sh"
 
 if ! grep -q -F "$(brew --prefix)/bin/fish" /etc/shells; then

@@ -5,6 +5,7 @@
 # yeah, let's do that.
 
 dotfiles="$HOME/.dotfiles"
+# shellcheck source=script/helpers.sh
 source "$dotfiles/script/helpers.sh"
 
 theme="$(defaults read com.apple.Terminal "Default Window Settings")"

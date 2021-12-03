@@ -1,6 +1,7 @@
 #!/bin/sh
 
 dotfiles="$HOME/.dotfiles"
+# shellcheck source=script/helpers.sh
 source "$dotfiles/script/helpers.sh"
 
 if ! gh auth status &> /dev/null; then
