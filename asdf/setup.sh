@@ -4,7 +4,7 @@ dotfiles="$HOME/.dotfiles"
 source "$dotfiles/script/helpers.sh"
 
 asdf="$(brew --prefix asdf)/bin/asdf"
-plugins="$("$asdf" plugin list)"
+plugins="$("$asdf" plugin list 2>/dev/null || :;)"
 
 for plugin in python nodejs; do
   if ! [[ $plugins =~ $plugin ]]; then
