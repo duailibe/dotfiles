@@ -31,7 +31,8 @@ cask "rocket"
 cask "slack"
 cask "spotify"
 cask "telegram"
+cask "the-unarchiver"
 cask "vlc"
+cask "visual-studio-code"
 cask "whatsapp"
 
-mas "The Unarchiver", id: 425424353
