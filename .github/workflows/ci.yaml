@@ -1,7 +1,5 @@
 name: CI
-on:
-  push: [main]
-  pull_request: [main]
+on: [push, pull_request]
 
 jobs:
   lint:
