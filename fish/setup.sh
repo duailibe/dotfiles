@@ -4,9 +4,10 @@ dotfiles="$HOME/.dotfiles"
 here="$dotfiles/fish"
 fish="$HOME/.config/fish"
 
+# shellcheck source=script/helpers.sh
 source "$dotfiles/script/helpers.sh"
 
-if ! fgrep -q "$(brew --prefix)/bin/fish" /etc/shells; then
+if ! grep -q -F "$(brew --prefix)/bin/fish" /etc/shells; then
   _chsh() {
     echo "$(brew --prefix)/bin/fish" | sudo tee -a /etc/shells;
     chsh -s "$(brew --prefix)/bin/fish"

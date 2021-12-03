@@ -2,6 +2,7 @@
 
 dotfiles="$HOME/.dotfiles"
 here="$dotfiles/homebrew"
+# shellcheck source=script/helpers.sh
 source "$dotfiles/script/helpers.sh"
 
 if ! command -v brew &> /dev/null; then
