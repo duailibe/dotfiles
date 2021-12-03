@@ -2,6 +2,7 @@
 # Automatically sets defaults for macOS
 # see https://mths.be/macos
 
+# shellcheck source=script/helpers.sh
 source "$HOME/.dotfiles/script/helpers.sh"
 
 enter_sudo
