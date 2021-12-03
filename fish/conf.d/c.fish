@@ -2,6 +2,10 @@ if test -z "$CODE_PATH"
   set -U CODE_PATH "$HOME/Code"
 end
 
+if ! test -e "$CODE_PATH"
+  mkdir -p "$CODE_PATH"
+end
+
 if test ! -z c
   function c -d "Go to code"
     cd "$CODE_PATH/$argv"
