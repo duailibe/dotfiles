@@ -11,6 +11,7 @@ if [ ! -e "$dotfiles" ]; then
 fi
 
 # Load helpers
+# shellcheck source=script/helpers.sh
 source "$dotfiles/script/helpers.sh"
 
 # Install Xcode CLI tools
@@ -32,7 +33,7 @@ sh "$dotfiles/macos/set-defaults.sh"
 echo
 
 if command -v git &> /dev/null || [ ! -e "$dotfiles/.git" ]; then
-  cd "$dotfiles"
+  cd "$dotfiles" || exit
   git init -q -b main
   git remote add origin "https://github.com/duailibe/dotfiles.git"
   git fetch -q origin
