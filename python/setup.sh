@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# shellcheck source=script/helpers.sh
 source "$HOME/.dotfiles/script/helpers.sh"
 
 asdf="$(brew --prefix asdf)/bin/asdf"

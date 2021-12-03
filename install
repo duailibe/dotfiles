@@ -31,8 +31,8 @@ sh "$dotfiles/bin/dot"
 sh "$dotfiles/macos/set-defaults.sh"
 echo
 
-if [ command -v git &> /dev/null ] || [ ! -e "$dotfiles/.git" ]; then
-  cd $dotfiles
+if command -v git &> /dev/null || [ ! -e "$dotfiles/.git" ]; then
+  cd "$dotfiles"
   git init -q -b main
   git remote add origin "https://github.com/duailibe/dotfiles.git"
   git fetch -q origin
