@@ -6,12 +6,10 @@ fish="$HOME/.config/fish"
 
 source "$dotfiles/script/helpers.sh"
 
-cd "$here"
-
-for file in $(find * -type f -not -wholename "setup.sh"); do
-  dir=$(dirname "$file")
-  if [ ! -e "$fish/$dir" ]; then
-    mkdir -p "$fish/$dir"
+find "$here" -type f -not -wholename "$here/setup.sh" | while read -r file; do
+  dest="$fish/${file#"$here/"}"
+  if [ ! -e "$(dirname "$dest")" ]; then
+    mkdir -p "$(dirname "$dest")"
   fi
-  symlink "$here/$file" "$fish/$file"
+  symlink "$file" "$dest"
 done
