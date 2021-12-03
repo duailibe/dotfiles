@@ -21,3 +21,10 @@ find "$here" -type f -not -wholename "$here/setup.sh" | while read -r file; do
   fi
   symlink "$file" "$dest"
 done
+
+if ! fish -c "command -v fisher" &> /dev/null; then
+  _fisher() {
+    fish -c "curl -sL https://git.io/fisher | source && fisher update"
+  }
+  task "Installing fisher and fish plugins" _fisher
+fi
