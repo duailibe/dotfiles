@@ -11,9 +11,12 @@ end
 set local_paths "$HOME/.dotfiles/bin" "$HOME/.local/bin"
 
 # android tools
-set android_path "$HOME/Library/Android/sdk/tools"
+set android_path "$HOME/Library/Android/sdk/platform-tools" "$HOME/Library/Android/sdk/tools"
 
-set -gx PATH $local_paths $homebrew_path $default_paths $android_path
+# Rust
+set rust_path "$HOME/.cargo/bin"
+
+set -gx PATH $local_paths $homebrew_path $default_paths $android_path $rust_path
 
 # Homebrew installed
 source (brew --prefix)/etc/grc.fish
