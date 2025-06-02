@@ -2,22 +2,22 @@ set -x -g LC_ALL en_US.UTF-8
 set -x -g LANG en_US.UTF-8
 set -x -g EDITOR nvim
 
-# Path configuration
-set default_paths /usr/local/bin /usr/local/sbin /usr/bin /usr/sbin /bin /sbin
-set homebrew_path
-if test (uname -m) = "arm64"
-  set homebrew_path /opt/homebrew/bin
-end
-set local_paths "$HOME/.dotfiles/bin" "$HOME/.local/bin"
-
-# android tools
-set android_path "$HOME/Library/Android/sdk/platform-tools" "$HOME/Library/Android/sdk/tools"
-
-# Rust
-set rust_path "$HOME/.cargo/bin"
-
-set -gx PATH $local_paths $homebrew_path $default_paths $android_path $rust_path
+fish_add_path ~/.dotfiles/bin
 
 # Homebrew installed
-source (brew --prefix)/etc/grc.fish
-source (brew --prefix asdf)/libexec/asdf.fish
+if command -q "brew"
+  source (brew --prefix)/etc/grc.fish
+  set HOMEBREW_NO_AUTO_UPDATE 1
+end
+
+if command -q "mise"
+  mise activate fish | source
+end
+
+if command -q "starship"
+  starship init fish | source
+end
+
+# Added by OrbStack: command-line tools and integration
+# This won't be added again if you remove it.
+source ~/.orbstack/shell/init2.fish 2>/dev/null || :
