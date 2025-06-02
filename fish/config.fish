@@ -1,6 +1,6 @@
 set -x -g LC_ALL en_US.UTF-8
 set -x -g LANG en_US.UTF-8
-set -x -g EDITOR vim
+set -x -g EDITOR nvim
 
 # Path configuration
 set default_paths /usr/local/bin /usr/local/sbin /usr/bin /usr/sbin /bin /sbin
