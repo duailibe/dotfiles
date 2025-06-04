@@ -20,3 +20,6 @@ github:
 		gh auth login; \
 	fi
 
+brew:
+	@command -v brew >/dev/null 2>&1 || curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | bash
+
