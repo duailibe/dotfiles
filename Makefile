@@ -1,6 +1,12 @@
+DOTFILES_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+PATH := /opt/homebrew/bin:$(PATH)
 export XDG_CONFIG_HOME = $(HOME)/.config
 
-all: git
+all: sudo brew-packages git
+
+sudo:
+	sudo -v
+	while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 config-dir:
 	mkdir -p "$(XDG_CONFIG_HOME)"
@@ -22,4 +28,7 @@ github:
 
 brew:
 	@command -v brew >/dev/null 2>&1 || curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | bash
+
+brew-packages: brew
+	brew bundle --file="$(DOTFILES_DIR)/Brewfile" --no-lock
 
