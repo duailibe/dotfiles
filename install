@@ -10,31 +10,18 @@ if [ ! -e "$dotfiles" ]; then
   tar -xzf "$tmp" --directory "$dotfiles" --strip-components 1
 fi
 
-# Load helpers
-# shellcheck source=script/helpers.sh
-source "$dotfiles/script/helpers.sh"
-
 # Install Xcode CLI tools
 if ! xcode-select --print-path &> /dev/null; then
-  _xcode_install() {
-    runcmd "xcode-select --install &> /dev/null"
-
-    until xcode-select --print-path &> /dev/null; do
-      sleep 5
-    done
-  }
-  task "Installing Xcode command line tools" _xcode_install
+  echo "Installing Xcode command line tools"
+  xcode-select --install
 fi
 
-sh "$dotfiles/bin/dot"
+cd "$dotfiles" || exit
 
-# We only want to run this once
-sh "$dotfiles/macos/set-defaults.sh"
-echo
-
-if command -v git &> /dev/null || [ ! -e "$dotfiles/.git" ]; then
-  cd "$dotfiles" || exit
+if [ ! -e "$dotfiles/.git" ]; then
   git init -q -b main
   git remote add origin "https://github.com/duailibe/dotfiles.git"
   git fetch -q origin
 fi
+
+make
