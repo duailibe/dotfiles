@@ -33,4 +33,5 @@ dock:
 	@dockutil --no-restart --add "/Applications/Google Chrome.app"
 	@dockutil --no-restart --add "/Applications/Ghostty.app"
 	@dockutil --no-restart --add "/Applications/Slack.app"
+	@dockutil --no-restart --add "/Applications" -s others
 	@killall Dock
