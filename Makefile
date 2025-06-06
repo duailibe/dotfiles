@@ -2,17 +2,17 @@ DOTFILES_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 PATH := /opt/homebrew/bin:$(PATH)
 export XDG_CONFIG_HOME = $(HOME)/.config
 
-all: brew-packages git
+all: brew-packages git dock
 
 config-dir:
 	mkdir -p "$(XDG_CONFIG_HOME)"
 
 link-config: config-dir
-	stow -t "$(XDG_CONFIG_HOME)" config
+	stow -t "$(XDG_CONFIG_HOME)" --no-folding config
 
 git-local:
-	mkdir -p "$(XDG_CONFIG_HOME)/git"
-	touch "$(XDG_CONFIG_HOME)/git/config.local"
+	@mkdir -p "$(XDG_CONFIG_HOME)/git"
+	@touch "$(XDG_CONFIG_HOME)/git/config.local"
 
 git: git-local link-config github
 
@@ -28,3 +28,9 @@ brew:
 brew-packages: brew
 	brew bundle --file="$(DOTFILES_DIR)/Brewfile"
 
+dock:
+	@dockutil --no-restart --remove all
+	@dockutil --no-restart --add "/Applications/Google Chrome.app"
+	@dockutil --no-restart --add "/Applications/Ghostty.app"
+	@dockutil --no-restart --add "/Applications/Slack.app"
+	@killall Dock
