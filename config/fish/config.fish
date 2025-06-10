@@ -2,6 +2,8 @@ set -x -g LC_ALL en_US.UTF-8
 set -x -g LANG en_US.UTF-8
 set -x -g EDITOR nvim
 
+fish_add_path ~/.local/bin
+
 if test -e /opt/homebrew/bin/brew
   /opt/homebrew/bin/brew shellenv | source
   source (brew --prefix)/etc/grc.fish
