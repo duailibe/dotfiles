@@ -2,19 +2,21 @@ DOTFILES_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 PATH := /opt/homebrew/bin:$(PATH)
 export XDG_CONFIG_HOME = $(HOME)/.config
 
-all: brew-packages git dock
+macos: brew-packages git dock
+
+ubuntu: stow
 
 config-dir:
 	mkdir -p "$(XDG_CONFIG_HOME)"
 
-link-config: config-dir
+stow: config-dir
 	stow -t "$(XDG_CONFIG_HOME)" --no-folding config
 
 git-local:
 	@mkdir -p "$(XDG_CONFIG_HOME)/git"
 	@touch "$(XDG_CONFIG_HOME)/git/config.local"
 
-git: git-local link-config github
+git: git-local stow github
 
 github:
 	@if ! gh auth status &> /dev/null; then \
