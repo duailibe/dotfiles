@@ -43,6 +43,9 @@ defaults write -g NSWindowResizeTime -float 0.001
 # Show battery percentage in menu bar
 defaults write com.apple.menuextra.battery ShowPercent -string 'YES'
 
+# Disable double automatic period substitution
+defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
+
 killall "SystemUIServer" &> /dev/null
 
 

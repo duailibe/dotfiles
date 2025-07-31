@@ -1,5 +1,7 @@
 [settings]
-idiomatic_version_file_enable_tools = ["node"]
+idiomatic_version_file_enable_tools = ["node", "ruby"]
 
 [tools]
+bun = "latest"
 node = "latest"
+python = "latest"
